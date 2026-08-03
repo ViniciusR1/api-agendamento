@@ -21,7 +21,7 @@ export class PrismaProfessionalRepository implements ProfessionalRepository {
 
   async findByEmail(email: string): Promise<Professional | null> {
     return this.prisma.professional.findFirst({
-       where: {email, deleteAt: null},
+       where: {email, deletedAt: null},
       select: {id: true, name: true, email: true},
     });
   }

@@ -11,3 +11,102 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum Weekday {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
+
+enum BookingStatus {
+  CONFIRMED
+  CANCELED
+}
+
+model Professional {
+  id          String    @id @default(uuid())
+  name        String
+  email       String    @unique
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime? 
+
+  services        Service[]
+  availabilities  Availability[]
+  blockedDates    BlockedDate[]
+  bookings        Booking[]
+
+  @@map("professionals")
+}
+
+model Service {
+  id                String @id @default(uuid())
+  name              String  
+  durationInMinutes Int
+  price             Decimal @db.Decimal(10,2)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  professionalId    String
+  professional      Professional @relation(fields: [professionalId], references: [id])
+
+  bookings          Booking[]
+
+
+  @@index([professionalId])
+  @@map("services")
+}
+
+model Availability {
+  id            String @id @default(uuid())
+  weekday       Weekday
+  startTime     String // formato "HH:mm", 09:00
+  endTime       String
+  createdAt     DateTime @default(now())
+
+  professionalId  String
+  professional    Professional @relation(fields: [professionalId], references: [id])
+
+  @@index([professionalId, weekday])
+  @@map("availabilities")
+}
+
+model BlockedDate {
+  id            String @id @default(uuid())
+  date           DateTime @db.Date
+  reason        String?
+  createdAt     DateTime @default(now())
+
+  professionalId  String
+  professional     Professional @relation(fields: [professionalId], references: [id])
+
+  @@unique([professionalId, date])
+  @@map("blocked_dates")
+}
+
+model Booking {
+  id            String @id @default(uuid())
+  clientName    String
+  clientEmail   String
+  startTime     DateTime
+  endTime       DateTime
+  status        BookingStatus @default(CONFIRMED)
+  createdAt     DateTime  @default(now())
+  updateAt      DateTime @updatedAt
+  canceledAt    DateTime?
+
+  professionalId  String
+  professional    Professional @relation(fields: [professionalId], references: [id])
+
+  serviceId       String
+  service         Service @relation(fields: [serviceId], references: [id])
+
+  @@unique([professionalId, startTime])
+  @@index([professionalId, startTime])
+  @@map("bookings")
+}
+

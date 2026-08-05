@@ -1,10 +1,16 @@
 import {prisma} from '../../lib/prisma';
+
 import { PrismaProfessionalRepository } from '../../modules/professional/prisma-professional.repository';
 import { ProfessionalService } from '../../modules/professional/professional.service';
 import { ProfessionalController } from '../../modules/professional/professional.controller';
+
 import {PrismaServiceRepository} from '../../modules/service/prisma-service.repository';
 import {ServiceService} from '../../modules/service/service.service';
 import {ServiceController} from '../../modules/service/service.controller';
+
+import { PrismaAvailabilityRepository } from '../../modules/availability/prisma-availability.repository';
+import { AvailabilityService } from '../../modules/availability/availability.service';
+import {AvailabilityController} from "../../modules/availability/availability.controller";
 
 export function buildContainer() {
   const professionalRepository = new PrismaProfessionalRepository(prisma);
@@ -15,5 +21,9 @@ export function buildContainer() {
   const serviceService = new ServiceService(serviceRepository);
   const serviceController = new ServiceController(serviceService);
 
-  return { professionalController, serviceController };
+  const availabilityRepository = new PrismaAvailabilityRepository(prisma);
+  const availabilityService = new AvailabilityService(availabilityRepository);
+  const availabilityController = new AvailabilityController(availabilityService);
+
+  return { professionalController, serviceController, availabilityController };
 }

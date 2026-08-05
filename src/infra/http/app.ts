@@ -3,6 +3,7 @@ import { buildContainer } from './container';
 import { createProfessionalRouter } from '../../modules/professional/professional.routes';
 import { errorHandler } from '../../shared/middlewares/error-handler.middleware';
 import {createServiceRouter} from "../../modules/service/service.routes";
+import { createAvailabilityRouter } from '../../modules/availability/availability.routes';
 
 export function createApp(): Express {
   const app = express();
@@ -15,6 +16,7 @@ export function createApp(): Express {
   const container = buildContainer();
   app.use('/professionals', createProfessionalRouter(container.professionalController));
   app.use('/services', createServiceRouter(container.serviceController));
+  app.use('/availabilities', createAvailabilityRouter(container.availabilityController));
   app.use(errorHandler);
 
   return app

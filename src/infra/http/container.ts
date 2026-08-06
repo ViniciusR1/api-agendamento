@@ -12,6 +12,11 @@ import { PrismaAvailabilityRepository } from '../../modules/availability/prisma-
 import { AvailabilityService } from '../../modules/availability/availability.service';
 import {AvailabilityController} from "../../modules/availability/availability.controller";
 
+import { PrismaBlockedDateRepository } from './../../modules/blocked-date/prisma-blocked-date.repository';
+import { BlockedDateService } from './../../modules/blocked-date/blocked-date.service';
+import {BlockedDateController} from "../../modules/blocked-date/blocked-date.controller";
+
+
 export function buildContainer() {
   const professionalRepository = new PrismaProfessionalRepository(prisma);
   const professionalService = new ProfessionalService(professionalRepository);
@@ -25,5 +30,9 @@ export function buildContainer() {
   const availabilityService = new AvailabilityService(availabilityRepository);
   const availabilityController = new AvailabilityController(availabilityService);
 
-  return { professionalController, serviceController, availabilityController };
+  const blockedDateRepository = new PrismaBlockedDateRepository(prisma);
+  const blockedDateService = new BlockedDateService(blockedDateRepository);
+  const blockedDateController = new BlockedDateController(blockedDateService);
+
+  return { professionalController, serviceController, availabilityController, blockedDateController };
 }

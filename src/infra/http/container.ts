@@ -22,6 +22,8 @@ import { BlockedDateController } from "../../modules/blocked-date/blocked-date.c
 
 // booking
 import { PrismaBookingRepository } from "../../modules/booking/prisma-booking.repository";
+import { BookingService } from "../../modules/booking/booking.service";
+import { BookingController } from "../../modules/booking/booking.controller";
 
 // scheduling (orquestrador de slots)
 import { AvailableSlotsService } from "../../modules/scheduling/available-slots.service";
@@ -54,6 +56,8 @@ export function buildContainer() {
 
   // booking
   const bookingRepository = new PrismaBookingRepository(prisma);
+  const bookingService = new BookingService(bookingRepository, serviceRepository, professionalRepository);
+  const bookingController = new BookingController(bookingService);
 
   // scheduling — depende dos 4 repositórios acima, não tem repositório próprio
   const availableSlotsService = new AvailableSlotsService(
@@ -72,5 +76,6 @@ export function buildContainer() {
     availabilityController,
     blockedDateController,
     availableSlotsController,
+    bookingController,
   };
 }

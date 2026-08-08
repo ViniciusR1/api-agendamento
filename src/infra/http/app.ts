@@ -6,6 +6,7 @@ import { createServiceRouter } from "../../modules/service/service.routes";
 import { createAvailabilityRouter } from "../../modules/availability/availability.routes";
 import { createBlockedDateRouter } from "../../modules/blocked-date/blocked-date.routes";
 import { createAvailableSlotsRouter } from "../../modules/scheduling/available-slots.routes";
+import { createBookingRouter } from "../../modules/booking/booking.routes";
 
 export function createApp(): Express {
   const app = express();
@@ -34,6 +35,7 @@ export function createApp(): Express {
     "/professionals",
     createAvailableSlotsRouter(container.availableSlotsController),
   );
+  app.use('/bookings', createBookingRouter(container.bookingController));
 
   app.use(errorHandler);
 

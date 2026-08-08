@@ -14,7 +14,7 @@ export class PrismaProfessionalRepository implements ProfessionalRepository {
 
   async findById(id: string): Promise<Professional | null> {
     return this.prisma.professional.findFirst({
-      where: {id, deleteAt: null},
+      where: {id, deletedAt: null},
       select: {id: true, name: true, email: true},
     });
   }

@@ -10,13 +10,19 @@ export class AppError extends Error {
 }
 
 export class NotFoundError extends AppError {
-  constructor(message = 'Resource not found') {
+  constructor(message = "Resource not found") {
     super(message, 404);
   }
 }
 
 export class BadRequestError extends AppError {
-  constructor(message = 'Invalid request') {
+  constructor(message = "Invalid request") {
     super(message, 400);
+  }
+}
+
+export class ConflictError extends AppError {
+  constructor(message = "Conflito com o estado atual") {
+    super(message, 409);
   }
 }

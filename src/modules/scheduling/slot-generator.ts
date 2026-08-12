@@ -1,20 +1,20 @@
 import {addMinutes, isBefore} from 'date-fns';
+import {fromZonedTime} from 'date-fns-tz';
 import {TimeSlot, AvailabilityWindow} from './slot.types';
 
-function parseTimeToDate(baseDate: Date, time: string): Date {
-  const [hours, minutes] = time.split(':').map(Number);
-  const result = new Date(baseDate);
-  result.setUTCHours(hours, minutes, 0, 0);
-  return result;
+function parseTimeToUTC(dateOnly: string, time: string, timezone: string): Date {
+  const localDateTimeString = `${dateOnly}T${time}:00`;
+  return fromZonedTime(localDateTimeString, timezone)
 }
 
 export function generateSlotsForWindow(
-  date: Date,
+  dateOnly: string,
   window: AvailabilityWindow,
   durationInMinutes: number,
+  timezone: string
 ): TimeSlot[] {
-  const windowStart = parseTimeToDate(date, window.startTime);
-  const windowEnd = parseTimeToDate(date, window.endTime);
+  const windowStart = parseTimeToUTC(dateOnly, window.startTime, timezone);
+  const windowEnd = parseTimeToUTC(dateOnly, window.endTime, timezone);
 
   const slots: TimeSlot[]= [];
   let cursor = windowStart;

@@ -4,6 +4,7 @@ import { CreateBookingDTO } from "./booking.types";
 import { ServiceRepository } from "../service/service.repository";
 import { ProfessionalRepository } from './../professional/professional.repository';
 import { BadRequestError } from "../../shared/errors/app-error";
+import {fromZonedTime} from 'date-fns-tz';
 
 
 export class BookingService {
@@ -28,7 +29,7 @@ export class BookingService {
     if(service.professionalId !== data.professionalId) {
       throw new BadRequestError(`O serviço não pertence a este profissional`);
     }
-    const startTime = new Date(data.startTime);
+    const startTime = fromZonedTime(data.startTime, professional.timezone);
     if(isNaN(startTime.getTime())) {
        throw new BadRequestError('A data inicial deve ser uma data ISO 8601 válida');
     }

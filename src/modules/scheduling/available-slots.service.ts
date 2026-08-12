@@ -67,7 +67,7 @@ export class AvailableSlotsService {
     );
 
     const rangeStart = fromZonedTime(`${dateOnly}T00:00:00`, professional.timezone );
-    const rangeEnd = fromZonedTime(`${dateOnly}T23:59:59:999`, professional.timezone);
+    const rangeEnd = fromZonedTime(`${dateOnly}T23:59:59.999`, professional.timezone);
     const occupied =
       await this.bookingRepository.findConfirmedByProfessionalAndDateRange(
         professionalId,

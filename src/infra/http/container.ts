@@ -65,6 +65,7 @@ export function buildContainer() {
     blockedDateRepository,
     bookingRepository,
     serviceRepository,
+    professionalRepository,
   );
   const availableSlotsController = new AvailableSlotsController(
     availableSlotsService,

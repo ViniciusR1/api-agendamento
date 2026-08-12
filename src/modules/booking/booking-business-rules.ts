@@ -11,7 +11,7 @@ function timeStringToMinutes(time: string): number {
   return hours * 60 + minutes;
 }
 
-export function IsWithinAnyWindow(
+export function isWithinAnyWindow(
   startTime: Date,
   endTime: Date,
   windows: AvailabilityWindow[],

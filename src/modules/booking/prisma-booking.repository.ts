@@ -60,4 +60,14 @@ export class PrismaBookingRepository implements BookingRepository {
       throw error
     }
   }
+  async findById(id: string): Promise<BookingEntity | null> {
+    return this.prisma.booking.findUnique({where: {id}})
+  }
+
+  async cancel(id: string): Promise<BookingEntity> {
+    return this.prisma.booking.update({
+      where: {id},
+      data: {status: 'CANCELED', canceledAt: new Date()}
+    })
+  }
 }

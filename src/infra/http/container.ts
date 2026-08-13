@@ -1,3 +1,4 @@
+
 import { prisma } from "../../lib/prisma";
 
 // professional
@@ -55,8 +56,14 @@ export function buildContainer() {
   const blockedDateController = new BlockedDateController(blockedDateService);
 
   // booking
-  const bookingRepository = new PrismaBookingRepository(prisma);
-  const bookingService = new BookingService(bookingRepository, serviceRepository, professionalRepository);
+  const bookingRepository = new PrismaBookingRepository(prisma)
+  const bookingService = new BookingService(
+    bookingRepository,
+    serviceRepository,
+    professionalRepository,
+    availabilityRepository,
+    blockedDateRepository,
+  );
   const bookingController = new BookingController(bookingService);
 
   // scheduling — depende dos 4 repositórios acima, não tem repositório próprio

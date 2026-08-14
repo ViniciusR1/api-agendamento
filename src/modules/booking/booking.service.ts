@@ -32,9 +32,9 @@ export class BookingService {
   ) {}
 
   async create(data: CreateBookingDTO) {
-    if(!data.clientName?.trim() ||  !data.clientEmail?.trim()) {
-      throw new BadRequestError('Nome do cliente e e-mail são obrigatórios');
-    }
+    // if(!data.clientName?.trim() ||  !data.clientEmail?.trim()) {
+    //   throw new BadRequestError('Nome do cliente e e-mail são obrigatórios');
+    // }
     const professional = await this.professionalRespository.findById(data.professionalId);
     if(!professional) {
       throw new NotFoundError(`Profissional ${data.professionalId} não encontrado`);

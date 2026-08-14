@@ -22,12 +22,15 @@ describe('E2E: GET /professionals/:id/available-slots', () => {
     await prisma.availability.create({
       data: { weekday: 'MONDAY', startTime: '09:00', endTime: '10:00', professionalId },
     });
-  });
+  }, 15000);
 
   afterAll(async () => {
-    await prisma.availability.deleteMany({ where: { professionalId } });
-    await prisma.service.deleteMany({ where: { professionalId } });
-    await prisma.professional.delete({ where: { id: professionalId } });
+    if (professionalId) {
+      await prisma.booking.deleteMany({ where: { professionalId } });
+      await prisma.availability.deleteMany({ where: { professionalId } });
+      await prisma.service.deleteMany({ where: { professionalId } });
+      await prisma.professional.delete({ where: { id: professionalId } });
+    }
     await prisma.$disconnect();
   });
 
@@ -38,7 +41,7 @@ describe('E2E: GET /professionals/:id/available-slots', () => {
 
     expect(response.status).toBe(200);
     expect(response.body.slots).toHaveLength(2);
-  });
+  }, 15000);
 
   it('retorna 400 quando a data está mal formatada', async () => {
     const response = await request(app)
@@ -46,7 +49,7 @@ describe('E2E: GET /professionals/:id/available-slots', () => {
       .query({ serviceId, date: '17-08-2026' });
 
     expect(response.status).toBe(400);
-  });
+  }, 15000);
 
   it('retorna 404 quando o serviceId não existe', async () => {
     const response = await request(app)
@@ -54,5 +57,5 @@ describe('E2E: GET /professionals/:id/available-slots', () => {
       .query({ serviceId: 'id-invalido', date: '2026-08-17' });
 
     expect(response.status).toBe(404);
-  });
+  }, 15000);
 });

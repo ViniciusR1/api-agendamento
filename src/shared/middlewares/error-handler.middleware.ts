@@ -11,7 +11,8 @@ export function errorHandler(
     res.status(err.statusCode).json({ error: err.message });
     return;
   }
-
   console.error(err);
-  res.status(500).json({ error: 'Internal server error' });
+
+  const isProduction = process.env.NODE_ENV === 'production';
+  res.status(500).json({ error: isProduction ? 'Erro interno no servidor' : err.message });
 }

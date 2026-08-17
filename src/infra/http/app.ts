@@ -7,9 +7,12 @@ import { createAvailabilityRouter } from "../../modules/availability/availabilit
 import { createBlockedDateRouter } from "../../modules/blocked-date/blocked-date.routes";
 import { createAvailableSlotsRouter } from "../../modules/scheduling/available-slots.routes";
 import { createBookingRouter } from "../../modules/booking/booking.routes";
+import {generalRateLimiter} from '../../shared/middlewares/rate-limit.middleware';
+import {bookingRateLimiter} from '../../shared/middlewares/rate-limit.middleware';
 
 export function createApp(): Express {
   const app = express();
+  app.use(generalRateLimiter)
 
   app.use(express.json());
   app.get("/health", (req, res) => {

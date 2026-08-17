@@ -9,8 +9,10 @@ import { createAvailableSlotsRouter } from "../../modules/scheduling/available-s
 import { createBookingRouter } from "../../modules/booking/booking.routes";
 import {generalRateLimiter} from '../../shared/middlewares/rate-limit.middleware';
 import {bookingRateLimiter} from '../../shared/middlewares/rate-limit.middleware';
+import helmet from 'helmet';
 
 export function createApp(): Express {
+  (helmet());
   const app = express();
   app.use(generalRateLimiter)
 

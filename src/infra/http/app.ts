@@ -10,11 +10,15 @@ import { createBookingRouter } from "../../modules/booking/booking.routes";
 import {generalRateLimiter} from '../../shared/middlewares/rate-limit.middleware';
 import {bookingRateLimiter} from '../../shared/middlewares/rate-limit.middleware';
 import helmet from 'helmet';
+import cors from 'cors';
 
 export function createApp(): Express {
   (helmet());
   const app = express();
   app.use(generalRateLimiter)
+
+  const allowedOrigins = (process.env.ALLOWED_ORIGINS ?? '').split(',').filter(Boolean);
+  app.use(cors({origin: allowedOrigins.length > 0 ? allowedOrigins: false, }), );
 
   app.use(express.json());
   app.get("/health", (req, res) => {
